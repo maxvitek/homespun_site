@@ -50,7 +50,7 @@
         <span style="color: {% if w.state %}#41ab5d{% else %}white{% endif %} ;padding-left:1em">{{ w.device_name|lower }}</span><br>
         {% endfor %}
         {% for h in hue %}
-        <span style="color: {% if h.state %}#41ab5d{% else %}white{% endif %} ;padding-left:1em">{{ h.device_name|lower }}</span><br>
+        <span style="color: {% if h.state and h.reachable %}#41ab5d{% else %}white{% endif %} ;padding-left:1em">{{ h.device_name|lower }}</span><br>
         {% endfor %}
         </p>
     </div>
