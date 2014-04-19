@@ -15,7 +15,6 @@ def home(request):
     
     wemo_device_count = session.query(func.count(distinct(WemoTimeSeries.device_name))).first()[0]
     wemo = session.query(WemoTimeSeries).order_by(WemoTimeSeries.datetime.desc()).limit(wemo_device_count).all()
-    print wemo
 
     hue_device_count = session.query(func.count(distinct(HueTimeSeries.device_name))).first()[0]
     hue = session.query(HueTimeSeries).order_by(HueTimeSeries.datetime.desc()).limit(hue_device_count).all()
