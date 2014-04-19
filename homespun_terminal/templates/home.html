@@ -1,0 +1,74 @@
+{% load staticfiles %}
+<!doctype html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static "style.css" %}">
+    <style type="text/css">
+        #devices {
+            width: 200px;
+            float: left;
+        }
+
+        #nest-apex {
+            width: 200px;
+            float: left;
+        }
+    </style>
+    <style type="text/css">
+        #shell-panel {
+            clear: both;
+            height: 200px;
+            width: 960px;
+            padding: 20px 20px 20px 20px;
+            overflow: scroll;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            border: 1px dashed #E6EBE0;
+            }
+
+        #shell-cli .prompt {
+            font-weight: bold;
+            }
+    </style>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.9.2/jquery-ui.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.2/underscore-min.js"></script>
+    <script src="http://sdether.github.io/josh.js/javascripts/killring.js"></script>
+    <script src="http://sdether.github.io/josh.js/javascripts/history.js"></script>
+    <script src="http://sdether.github.io/josh.js/javascripts/readline.js"></script> 
+    <script src="http://sdether.github.io/josh.js/javascripts/shell.js"></script> 
+    <script src="http://sdether.github.io/josh.js/javascripts/pathhandler.js"></script>
+    <script src="{% static "homespun_shell.js" %}"></script>
+    <title>homespun</title>
+</head>
+<body>
+    <div id="devices">
+        <p>
+            homespun$
+        </p>
+        <p>devices:</br>
+        {% for w in wemo %}
+        <span style="color: {% if w.state %}#41ab5d{% else %}white{% endif %} ;padding-left:1em">{{ w.device_name|lower }}</span><br>
+        {% endfor %}
+        {% for h in hue %}
+        <span style="color: {% if h.state %}#41ab5d{% else %}white{% endif %} ;padding-left:1em">{{ h.device_name|lower }}</span><br>
+        {% endfor %}
+        </p>
+    </div>
+    <div id="nest-apex">
+        <p>nest:<br>
+        <span style="padding-left:1em;">temperature: {{ nest.temperature|stringformat:".2f" }}</span></br>
+        <span style="padding-left:1em">humidity: {{ nest.humidity }}</span>
+        </p>
+        <p>apex:<br>
+        {% for a in apex %}
+        <span style="padding-left:1em">{{ a.device_name|lower }}: {{ a.value|stringformat:".2f" }}</span><br>
+        {% endfor %}
+        </p>
+    </div>
+    <div id="shell-panel" tabindex="0">
+        <div>Type <code>help</code> or hit <code>TAB</code> for a list of commands.
+        </div>
+        <div id="shell-view">
+        </div>
+    </div>
+</body>
