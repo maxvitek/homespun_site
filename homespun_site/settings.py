@@ -16,6 +16,8 @@ HUE_USER = os.environ['HUE_USER']
 NEST_USER = os.environ['NEST_USER']
 NEST_PASSWD = os.environ['NEST_PASSWD']
 APEX_IP_ADDRESS = os.environ['APEX_IP_ADDRESS']
+ROOMBAS = os.environ['ROOMBAS']
+NETWORK_NODES = os.environ['NETWORK_NODES']
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

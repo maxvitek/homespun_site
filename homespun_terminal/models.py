@@ -79,3 +79,22 @@ class ApexTimeSeries(Base):
         else:
             metric = self.value
         return '<Apex(%s::%s::%s)>' % (self.datetime, self.device_name, str(metric))
+
+
+class RoombaTimeSeries(Base):
+    '''
+    roombas!
+    '''
+    __tablename__ = 'roomba'
+    datetime = Column(DateTime, default=datetime.datetime.utcnow, primary_key=True)
+    device_name = Column(String(50), primary_key=True)
+    remote_opcode = Column(Integer)
+    buttons = Column(Integer)
+    distance = Column(Float)
+    angle = Column(Float)
+    current = Column(Float)
+    change = Column(Float)
+    capacity = Column(Float)
+
+    def __repr__(self):
+        return '<Roomba(%s::%s::%s)>' % (self.datetime, self.device_name, self.remote_opcode)
