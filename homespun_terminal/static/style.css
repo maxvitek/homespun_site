@@ -18,7 +18,7 @@ body { background: #000000;
             float: left;
         }
 
-#roomba {
+#roomba-flower {
             width: 25%;
             height: 50%;
             float: left;
@@ -406,3 +406,4 @@ body { background: #000000;
 	background: rgba(255, 255, 255, 0.2);
 	border-radius: 3px;
 }
+.rickshaw_graph .detail .date { color: #a0a0a0 }

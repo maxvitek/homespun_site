@@ -16,7 +16,7 @@ urlpatterns = patterns('',
     # Uncomment the next line to enable the admin:
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'homespun_terminal.views.home', name='home'),
-    url(r'^chart/(?P<chart_type>\w+)/$', 'homespun_terminal.views.chart', name='chart'),
+    url(r'^chart/(?P<device>[\w|\W]+)/(?P<chart_type>[\w|\W]+)/$', 'homespun_terminal.views.chart', name='chart'),
 )
 
 urlpatterns += staticfiles_urlpatterns()

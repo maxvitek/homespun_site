@@ -25,7 +25,7 @@
             request.send()
         }
 
-        getAjaxJS('{% url 'homespun_terminal.views.chart' 'nest_temperature' %}')
+        getAjaxJS('{% url 'homespun_terminal.views.chart' 'nest' 'temperature' %}')
     </script>
     <title>homespun</title>
 </head>
@@ -33,29 +33,34 @@
     <div id="devices">
         <p>devices:</br>
         {% for w in wemo %}
-        <span style="color: {% if w.state %}#41ab5d{% else %}white{% endif %} ;padding-left:1em">wemo/{{ w.device_name|lower }}</span><br>
+        <span style="color: {% if w.state %}#41ab5d{% else %}white{% endif %} ;padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'wemo' w.device_name|urlencode %}')">wemo/{{ w.device_name|lower }}</span><br>
         {% endfor %}
         {% for h in hue %}
-        <span style="color: {% if h.state and h.reachable %}#41ab5d{% else %}white{% endif %} ;padding-left:1em">hue/{{ h.device_name|lower }}</span><br>
+        <span style="color: {% if h.state and h.reachable %}#41ab5d{% else %}white{% endif %} ;padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'hue' h.device_name|urlencode %}')">hue/{{ h.device_name|lower }}</span><br>
         {% endfor %}
         </p>
     </div>
     <div id="nest-apex">
         <p>nest:<br>
-        <span style="padding-left:1em;">temperature: {{ nest.temperature|stringformat:".2f" }}</span></br>
-        <span style="padding-left:1em">humidity: {{ nest.humidity }}</span>
+        <span style="padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'nest' 'temperature' %}')">temperature: {{ nest.temperature|stringformat:".2f" }}</span></br>
+        <span style="padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'nest' 'humidity' %}')">humidity: {{ nest.humidity }}</span>
         </p>
         <p>apex:<br>
         {% for a in apex %}
-        <span style="padding-left:1em">{{ a.device_name|lower }}: {{ a.value|stringformat:".2f" }}</span><br>
+        <span style="padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'apex' a.device_name|urlencode %}')">{{ a.device_name|lower }}: {{ a.value|stringformat:".2f" }}</span><br>
         {% endfor %}
         </p>
     </div>
-    <div id="roomba">
+    <div id="roomba-flower">
         <p>roomba:</br>
         {% for r in roomba %}
-        <span>{{ r.device_name }}: {{ r.change }}/{{ r.capacity }}</span></br>
+        <span style="padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'roomba' r.device_name|urlencode %}')">{{ r.device_name }}: {{ r.change }}/{{ r.capacity }}</span></br>
         {% endfor %}
+        </p>
+        <p>flower:</br>
+        <span style="padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'flower' 'plant_temp' %}')">temperature: {{ flower.plant_temp|stringformat:".2f" }}</span></br>
+        <span style="padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'flower' 'sunlight' %}')">sunlight: {{ flower.sunlight|stringformat:".2f" }}</span></br>
+        <span style="padding-left:1em; cursor: pointer; cursor: hand;" onclick="getAjaxJS('{% url 'homespun_terminal.views.chart' 'flower' 'water' %}')">water: {{ flower.water|stringformat:".2f" }}</span></br>
         </p>
     </div>
     <div id="chart">

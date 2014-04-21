@@ -35,8 +35,10 @@ new Rickshaw.Graph.Axis.Time({
 
 new Rickshaw.Graph.HoverDetail({
     graph: chart_graph,
-    xFormatter: function(x) {
-        return new Date(x * 1000).toString();
+    formatter: function(series, x, y) {
+        var date = '<span class="date">' + new Date(x * 1000).toUTCString() + '</span>';
+        var content = series.name + ": " + Math.round(100 * parseFloat(y)) / 100 + '<br>' + date;
+        return content;
     }
 });
 
