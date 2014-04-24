@@ -5,6 +5,7 @@ $(document).ready(function() {
       shell.onNewPrompt(function(callback) {
         callback("<span style='color: #a6bddb'>homespun</span><span style='color: #74c476'>$</span>");
       });
+      
       shell.setCommandHandler("hello", {
         exec: function(cmd, args, callback) {
           var arg = args[0] || '';
@@ -22,5 +23,16 @@ $(document).ready(function() {
           callback(shell.bestMatch(arg, ['world', 'josh']))
         }
       });
+
+      shell.setCommandHandler("wemo",{
+        exec: function(cmd, args, callback) {
+            var command = args[0] || '';
+            var response = '';
+            if(command === 'ls') {
+
+            }
+        }
+      }
+      
       shell.activate();
     });
