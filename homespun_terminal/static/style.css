@@ -82,6 +82,7 @@ body { background: #000000;
 	position: absolute;
 	background: white;
 	white-space: nowrap;
+    display: none ;
 }
 .rickshaw_graph .detail .x_label.left {
 	left: 0;
@@ -89,6 +90,7 @@ body { background: #000000;
 .rickshaw_graph .detail .x_label.right {
 	right: 0;
 }
+
 .rickshaw_graph .detail .item {
 	position: absolute;
 	z-index: 2;

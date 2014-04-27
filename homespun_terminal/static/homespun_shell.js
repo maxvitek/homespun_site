@@ -1,4 +1,11 @@
 $(document).ready(function() {
+    function getReply(url) {
+        var request = new XMLHttpRequest();
+            request.open('GET', url, false)
+            request.send()
+            return request.responseText;
+        };
+
       var history = new Josh.History({ key: 'josh.homespun'});
       var shell = Josh.Shell({history: history});
       var promptCounter = 0;
@@ -6,33 +13,45 @@ $(document).ready(function() {
         callback("<span style='color: #a6bddb'>homespun</span><span style='color: #74c476'>$</span>");
       });
       
-      shell.setCommandHandler("hello", {
-        exec: function(cmd, args, callback) {
-          var arg = args[0] || '';
-          var response = "who is this " + arg + " you are talking to?";
-          if(arg === 'josh') {
-            response = 'pleased to meet you.';
-          } else if(arg === 'world') {
-            response = 'world says hi.'
-          } else if(!arg) {
-            response = 'who are you saying hello to?';
-          }
-          callback(response);
-        },
-        completion: function(cmd, arg, line, callback) {
-          callback(shell.bestMatch(arg, ['world', 'josh']))
-        }
-      });
-
-      shell.setCommandHandler("wemo",{
+      shell.setCommandHandler("hue", {
         exec: function(cmd, args, callback) {
             var command = args[0] || '';
             var response = '';
             if(command === 'ls') {
-
+                response = getReply('/hue/ls/');
+            } else if(command === 'on') {
+                var device = encodeURIComponent(args[1].split('_').join(' ')) || '';
+                response = getReply('/hue/on/' + device)
+            } else if(command === 'off') {
+                var device = encodeURIComponent(args[1].split('_').join(' ')) || '';
+                response = getReply('/hue/off/' + device)
             }
+            callback(response)
+        },
+        completion: function(cmd, arg, line, callback) {
+            callback(shell.bestMatch(arg, ['ls', 'on', 'off']))
         }
-      }
+      });
+
+      shell.setCommandHandler("wemo", {
+        exec: function(cmd, args, callback) {
+            var command = args[0] || '';
+            var response = '';
+            if(command === 'ls') {
+                response = getReply('/wemo/ls/');
+            } else if(command === 'on') {
+                var device = encodeURIComponent(args[1].split('_').join(' ')) || '';    
+                response = getReply('/wemo/on/' + device)
+            } else if(command === 'off') {
+                var device = encodeURIComponent(args[1].split('_').join(' ')) || '';
+                response = getReply('/wemo/off/' + device)
+            }
+            callback(response)
+        },
+        completion: function(cmd, arg, line, callback) {
+            callback(shell.bestMatch(arg, ['ls', 'on', 'off']))
+        }
+      });
       
       shell.activate();
     });

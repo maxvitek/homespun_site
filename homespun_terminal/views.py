@@ -1,15 +1,22 @@
 import datetime
+import json
+import urllib
 
 import pandas as pd
 from sqlalchemy import func, distinct
 
 from django.shortcuts import render
+from django.http import HttpResponse
+
 from models import WemoTimeSeries, HueTimeSeries, NestTimeSeries, ApexTimeSeries, RoombaTimeSeries
 from models import session
 from services import Flower
+from commands import Wemo as WemoCC
+from commands import Hue as HueCC
 
 def home(request):
 
+    session.rollback()
     session.commit()
 
     filter_date = datetime.datetime.utcnow() - datetime.timedelta(seconds=60)
@@ -40,6 +47,15 @@ def home(request):
 
 
 def chart(request, device=None, chart_type=None):
+    device = urllib.unquote(device)
+    chart_type = urllib.unquote(chart_type)
+
+    # print 'device: ', device
+    # print 'chart_type: ', chart_type
+
+    session.rollback()
+    session.commit()
+
     if not device:
         raise NoDeviceSpecified()
     if not chart_type:
@@ -69,9 +85,67 @@ def chart(request, device=None, chart_type=None):
     return render(request, template_name='chart.html', dictionary={'chart_type': 'device' + '_' + chart_type, 'series': df})
 
 
+def wemo(request, command=None, device=None):
+    if not command:
+        raise NoCommandSpecified()
+    if device:
+        device = urllib.unquote(device)
+
+    if command == 'ls':
+        devices = session.query(distinct(WemoTimeSeries.device_name)).all()
+        response = '<p>'
+        for d in devices:
+            response += "'" + d[0] + "'</br>"
+        response += '</p>'
+    
+    elif command == 'on':
+        wemo = WemoCC().on(device)
+        response = '<p>' + device + ' turned on.</p>'
+    
+    elif command == 'off':
+        wemo = WemoCC().off(device)
+        response = '<p>' + device + ' turned off.</p>'
+
+    elif command == 'completion':
+        completion = []
+        devices = session.query(distinct(WemoTimeSeries.device_name)).all()
+        for d in devices:
+            completion.append(d.lower().replace(' ', '_'))
+        response = json.dumps(completion)
+
+    return HttpResponse(response)
+
+
+def hue(request, command=None, device=None):
+    if not command:
+        raise NoCommandSpecified()
+    if device:
+        device = urllib.unquote(device)
+
+    if command == 'ls':
+        devices = session.query(distinct(HueTimeSeries.device_name)).all()
+        response = '<p>'
+        for d in devices:
+            response += "'" + d[0] + "'</br>"
+        response += '</p>'
+
+    elif command == 'on':
+        hue = HueCC().on(device)
+        response = '<p>' + device + ' turned on.</p>'
+
+    elif command == 'off':
+        hue = HueCC().off(device)
+        response = '<p>' + device + ' turned off.</p>'
+
+    return HttpResponse(response)
+
 class NoChartTypeSpecified(Exception):
     pass
 
 
 class NoDeviceSpecified(Exception):
+    pass
+
+
+class NoCommandSpecified(Exception):
     pass

@@ -17,6 +17,8 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     url(r'^$', 'homespun_terminal.views.home', name='home'),
     url(r'^chart/(?P<device>[\w|\W]+)/(?P<chart_type>[\w|\W]+)/$', 'homespun_terminal.views.chart', name='chart'),
+    url(r'^wemo/(?P<command>[\w|\W]+)/(?P<device>[\w|\W]+)?', 'homespun_terminal.views.wemo', name='wemo'),
+    url(r'hue/(?P<command>[\w|\W]+)/(?P<device>[\w|\W]+)?', 'homespun_terminal.views.hue', name='hue'),
 )
 
 urlpatterns += staticfiles_urlpatterns()
