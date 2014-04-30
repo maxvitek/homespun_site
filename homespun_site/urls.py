@@ -19,6 +19,7 @@ urlpatterns = patterns('',
     url(r'^chart/(?P<device>[\w|\W]+)/(?P<chart_type>[\w|\W]+)/$', 'homespun_terminal.views.chart', name='chart'),
     url(r'^wemo/(?P<command>[\w|\W]+)/(?P<device>[\w|\W]+)?', 'homespun_terminal.views.wemo', name='wemo'),
     url(r'hue/(?P<command>[\w|\W]+)/(?P<device>[\w|\W]+)?', 'homespun_terminal.views.hue', name='hue'),
+    url(r'nest/(?P<command>[\w|\W]+)/(?P<temp>[\w|\W]+)?', 'homespun_terminal.views.nest', name='nest'),
 )
 
 urlpatterns += staticfiles_urlpatterns()

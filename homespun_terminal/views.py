@@ -13,6 +13,7 @@ from models import session
 from services import Flower
 from commands import Wemo as WemoCC
 from commands import Hue as HueCC
+from commands import Nest as NestCC
 
 def home(request):
 
@@ -136,6 +137,17 @@ def hue(request, command=None, device=None):
     elif command == 'off':
         hue = HueCC().off(device)
         response = '<p>' + device + ' turned off.</p>'
+
+    return HttpResponse(response)
+
+
+def nest(request, command=None, temp=None):
+    if not command or not temp:
+        raise NoCommandSpecified()
+
+    if command == 'set':
+        nest = NestCC().set(temp)
+        response = '<p>Temperature set: ' + temp + '</p>'
 
     return HttpResponse(response)
 

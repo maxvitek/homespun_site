@@ -52,6 +52,22 @@ $(document).ready(function() {
             callback(shell.bestMatch(arg, ['ls', 'on', 'off']))
         }
       });
+
+      shell.setCommandHandler("nest", {
+        exec: function(cmd, args, callback) {
+            var command = args[0] || '';
+            var response = '';
+            if(command === 'set') {
+                var temp = args[1] || '';
+                response = getReply('/nest/set/' + temp);
+            }
+            callback(response)
+        },
+        completion: function(cmd, arg, line, callback) {
+            callback(shell.bestMatch(arg, ['set']))
+        }
+      });
+
       
       shell.activate();
     });
